@@ -13,14 +13,46 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(),
-      drawer: buildDrawer(),
+      drawer: NavigationDrawer(),
       body: Container(
         child: Text("data"),
       ),
+    );
+  }
+
+  AppBar buildAppBar() {
+    return AppBar(
+      title: Text("Discord"),
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.search),
+          onPressed: () {},
+        ),
+        IconButton(
+          icon: Icon(Icons.people),
+          onPressed: () {},
+        ),
+        IconButton(
+          icon: Icon(Icons.more_vert),
+          onPressed: () {},
+        )
+      ],
+    );
+  }
+}
+
+
+class NavigationDrawer extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: buildDrawer(),
     );
   }
 
@@ -192,27 +224,8 @@ class _AppState extends State<App> {
       ),
     );
   }
-
-  AppBar buildAppBar() {
-    return AppBar(
-      title: Text("Discord"),
-      actions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.search),
-          onPressed: () {},
-        ),
-        IconButton(
-          icon: Icon(Icons.people),
-          onPressed: () {},
-        ),
-        IconButton(
-          icon: Icon(Icons.more_vert),
-          onPressed: () {},
-        )
-      ],
-    );
-  }
 }
+
 
 class MenuItem {
   final String title;
