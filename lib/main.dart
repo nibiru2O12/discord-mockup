@@ -26,13 +26,72 @@ class _AppState extends State<App> {
 
   Drawer buildDrawer() {
     return Drawer(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          buildGroupNavigation(),
-          buildChannels(),
-        ],
+      child: Container(
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  buildGroupNavigation(),
+                  buildChannels(),
+                ],
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.all(8),
+              height: 65,
+              color: Colors.grey[850],
+              child: Row(
+                children: <Widget>[
+                  buildNavigationBottomBottun(icon: Icons.account_circle,size: 40),
+                  buildNavigationBottomTitle(),
+                  buildNavigationBottomBottun(icon: Icons.find_in_page),
+                  buildNavigationBottomBottun(icon: Icons.alternate_email),
+                  buildNavigationBottomBottun(icon: Icons.settings),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Expanded buildNavigationBottomTitle() {
+    return Expanded(
+      child: Container(
+        padding: EdgeInsets.fromLTRB(16, 0, 4, 0),
+        child: ColumnWithSeparator(
+          margin: EdgeInsets.symmetric(vertical: 3),
+          children: <Widget>[
+            Text(
+              "rjgagui",
+              style: TextStyle(color: Colors.white, fontSize:16),
+            ),
+            Text(
+              "#1233",
+              style: TextStyle(color: Colors.white, fontSize: 12),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Material buildNavigationBottomBottun({IconData icon, Function onTap, double size}) {
+    return Material(
+      type: MaterialType.transparency,
+      child: InkWell(
+        onTap: () {},
+        child: Container(
+            padding: EdgeInsets.all(6),
+            child: Icon(
+              icon,
+              color: Colors.white,
+              size: size ?? 26,
+            )),
       ),
     );
   }
@@ -120,11 +179,15 @@ class _AppState extends State<App> {
           ),
           ColumnWithSeparator(
             margin: EdgeInsets.only(bottom: 12),
-            children: groups.map((g)=>
-              CircularButton(icon: Icons.gesture,)
-            ).toList(),
+            children: groups
+                .map((g) => CircularButton(
+                      icon: Icons.gesture,
+                    ))
+                .toList(),
           ),
-          CircularButton(icon: Icons.add,)
+          CircularButton(
+            icon: Icons.add,
+          )
         ],
       ),
     );
