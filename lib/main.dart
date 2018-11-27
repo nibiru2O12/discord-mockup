@@ -63,19 +63,6 @@ class _AppState extends State<App> {
                       }).toList());
                 }).toList(),
               ),
-              // child: ListView(
-              //   children: <Widget>[
-              //     new Menu(
-              //       title: "Menu 2",
-              //     ),
-              //     new Menu(
-              //       title: "Menu 3",
-              //     ),
-              //     new Menu(
-              //       title: "Menu 4",
-              //     ),
-              //   ],
-              // )
             ),
           ),
         ],
@@ -186,7 +173,7 @@ class MenuItem {
   MenuItem({this.title, this.leading, this.trailing});
 }
 
-class Menu extends StatelessWidget {
+class Menu extends StatefulWidget {
   final String title;
   final IconData leading;
   final IconData trailing;
@@ -201,18 +188,54 @@ class Menu extends StatelessWidget {
       : super(key: key);
 
   @override
+  MenuState createState() {
+    return new MenuState();
+  }
+}
+
+class MenuState extends State<Menu> {
+  bool _isOpen = false;
+
+  _toggleOpen() {
+    setState(() {
+      _isOpen = !_isOpen;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(0, 0, 16, 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Row(
+        children: <Widget>[buildMenuButton(
+          leading: widget.leading,
+          title: widget.title,
+          onTap: _toggleOpen
+        ), buildSubmenus()],
+      ),
+    );
+  }
+
+  Material buildMenuButton({
+    IconData leading,
+    Function onTap,
+    String title
+  }) {
+    return Material(
+      type: MaterialType.transparency,
+      child: InkWell(
+        onTap: onTap,
+        child: Container(
+          padding: EdgeInsets.fromLTRB(0, 16, 16, 16),
+          child: Row(
             children: <Widget>[
-              Icon(
-                leading ?? (Icons.keyboard_arrow_down),
-                color: Colors.white54,
-                size: 14,
+              Container(
+                margin: EdgeInsets.only(right: 6),
+                child: Icon(
+                  leading ?? (Icons.keyboard_arrow_down),
+                  color: Colors.white54,
+                  size: 14,
+                ),
               ),
               Text(
                 title,
@@ -223,31 +246,29 @@ class Menu extends StatelessWidget {
               )
             ],
           ),
-          buildSubmenus()
-        ],
+        ),
       ),
     );
   }
 
   buildSubmenus() {
-    if (children == null) return Container();
-    if (children.length == 0) return Container();
+    if (widget.children == null || !_isOpen) return Container();
+    if (widget.children.length == 0) return Container();
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: children.map((m) => buildSubmenu(title: m.title)).toList(),
-    );
-  }
-
-  Container buildSubmenu({String title}) {
     return Container(
-      padding: EdgeInsets.fromLTRB(24, 16, 16, 8),
-      child: Text(
-        "# $title",
-        style: TextStyle(color: Colors.white54),
+      padding: EdgeInsets.only(left: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children:
+            widget.children.map((m) => buildMenuButton(
+              title: m.title,
+              onTap: (){},
+              leading: Icons.filter
+            )).toList(),
       ),
     );
   }
+
 }
 
 class CircularButton extends StatelessWidget {
@@ -258,14 +279,15 @@ class CircularButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RawMaterialButton(
-      onPressed: onPress,
+    return OutlineButton(
+      splashColor: Colors.white54,
+      onPressed: (){},
       shape: CircleBorder(),
-      fillColor: Colors.white,
+      // fillColor: Colors.white,
       padding: EdgeInsets.all(14),
       child: Icon(
         icon,
-        color: Colors.black,
+        color: Colors.white,
       ),
     );
   }
