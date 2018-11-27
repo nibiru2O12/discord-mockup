@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mockup_discord/common/ColumnWithSeparator.dart';
 import 'package:flutter_mockup_discord/models/channels.dart';
+import 'package:flutter_mockup_discord/models/groups.dart';
 
 void main() => runApp(MaterialApp(
       title: "Discord Mock-up",
@@ -15,18 +17,22 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(),
-      drawer: Drawer(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            buildGroupNavigation(),
-            buildChannels(),
-          ],
-        ),
-      ),
+      drawer: buildDrawer(),
       body: Container(
         child: Text("data"),
+      ),
+    );
+  }
+
+  Drawer buildDrawer() {
+    return Drawer(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          buildGroupNavigation(),
+          buildChannels(),
+        ],
       ),
     );
   }
@@ -112,33 +118,13 @@ class _AppState extends State<App> {
           Divider(
             color: Colors.white70,
           ),
-          CircularButton(
-            icon: Icons.gesture,
+          ColumnWithSeparator(
+            margin: EdgeInsets.only(bottom: 12),
+            children: groups.map((g)=>
+              CircularButton(icon: Icons.gesture,)
+            ).toList(),
           ),
-          SizedBox(
-            height: 16,
-          ),
-          CircularButton(
-            icon: Icons.g_translate,
-          ),
-          SizedBox(
-            height: 16,
-          ),
-          CircularButton(
-            icon: Icons.free_breakfast,
-          ),
-          SizedBox(
-            height: 16,
-          ),
-          RawMaterialButton(
-            onPressed: () {},
-            shape: OutlineInputBorder(),
-            padding: EdgeInsets.all(14),
-            child: Icon(
-              Icons.add,
-              color: Colors.white54,
-            ),
-          )
+          CircularButton(icon: Icons.add,)
         ],
       ),
     );
@@ -207,20 +193,16 @@ class MenuState extends State<Menu> {
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[buildMenuButton(
-          leading: widget.leading,
-          title: widget.title,
-          onTap: _toggleOpen
-        ), buildSubmenus()],
+        children: <Widget>[
+          buildMenuButton(
+              leading: widget.leading, title: widget.title, onTap: _toggleOpen),
+          buildSubmenus()
+        ],
       ),
     );
   }
 
-  Material buildMenuButton({
-    IconData leading,
-    Function onTap,
-    String title
-  }) {
+  Material buildMenuButton({IconData leading, Function onTap, String title}) {
     return Material(
       type: MaterialType.transparency,
       child: InkWell(
@@ -259,16 +241,13 @@ class MenuState extends State<Menu> {
       padding: EdgeInsets.only(left: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children:
-            widget.children.map((m) => buildMenuButton(
-              title: m.title,
-              onTap: (){},
-              leading: Icons.filter
-            )).toList(),
+        children: widget.children
+            .map((m) => buildMenuButton(
+                title: m.title, onTap: () {}, leading: Icons.filter))
+            .toList(),
       ),
     );
   }
-
 }
 
 class CircularButton extends StatelessWidget {
@@ -281,7 +260,7 @@ class CircularButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return OutlineButton(
       splashColor: Colors.white54,
-      onPressed: (){},
+      onPressed: () {},
       shape: CircleBorder(),
       // fillColor: Colors.white,
       padding: EdgeInsets.all(14),
