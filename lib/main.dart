@@ -4,6 +4,7 @@ import 'package:flutter_mockup_discord/models/channels.dart';
 import 'package:flutter_mockup_discord/models/groups.dart';
 
 void main() => runApp(MaterialApp(
+      theme: ThemeData.dark(),
       title: "Discord Mock-up",
       home: App(),
     ));
@@ -13,21 +14,60 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(),
-      drawer: NavigationDrawer(),
-      body: Container(
-        child: Text("data"),
-      ),
+        appBar: buildAppBar(title: "#fcc-meetups"),
+        drawer: NavigationDrawer(),
+        body: Container(
+          child: Text("data"),
+        ),
+        bottomSheet: BottomSheet(
+          onClosing: () {},
+          builder: buildMessageEditor,
+        ));
+  }
+
+  Widget buildMessageEditor(context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: <Widget>[
+        Divider(
+          height: 2,
+        ),
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+          child: Row(
+            children: <Widget>[
+              Icon(Icons.add),
+              SizedBox(
+                width: 15,
+              ),
+              Expanded(
+                  child: TextFormField(
+                style: TextStyle(fontSize: 13),
+                maxLines: null,
+                decoration:
+                    InputDecoration.collapsed(hintText: "Message #fcc-meetups"),
+              )),
+              SizedBox(
+                width: 15,
+              ),
+              Icon(Icons.insert_emoticon),
+              SizedBox(
+                width: 15,
+              ),
+              Icon(Icons.send)
+            ],
+          ),
+        ),
+      ],
     );
   }
 
-  AppBar buildAppBar() {
+  AppBar buildAppBar({String title}) {
     return AppBar(
-      title: Text("Discord"),
+      title: Text(title ?? "Discord"),
       actions: <Widget>[
         IconButton(
           icon: Icon(Icons.search),
@@ -46,9 +86,7 @@ class _AppState extends State<App> {
   }
 }
 
-
 class NavigationDrawer extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -77,7 +115,8 @@ class NavigationDrawer extends StatelessWidget {
               color: Colors.grey[850],
               child: Row(
                 children: <Widget>[
-                  buildNavigationBottomBottun(icon: Icons.account_circle,size: 40),
+                  buildNavigationBottomBottun(
+                      icon: Icons.account_circle, size: 40),
                   buildNavigationBottomTitle(),
                   buildNavigationBottomBottun(icon: Icons.find_in_page),
                   buildNavigationBottomBottun(icon: Icons.alternate_email),
@@ -100,7 +139,7 @@ class NavigationDrawer extends StatelessWidget {
           children: <Widget>[
             Text(
               "rjgagui",
-              style: TextStyle(color: Colors.white, fontSize:16),
+              style: TextStyle(color: Colors.white, fontSize: 16),
             ),
             Text(
               "#1233",
@@ -112,7 +151,8 @@ class NavigationDrawer extends StatelessWidget {
     );
   }
 
-  Material buildNavigationBottomBottun({IconData icon, Function onTap, double size}) {
+  Material buildNavigationBottomBottun(
+      {IconData icon, Function onTap, double size}) {
     return Material(
       type: MaterialType.transparency,
       child: InkWell(
@@ -225,7 +265,6 @@ class NavigationDrawer extends StatelessWidget {
     );
   }
 }
-
 
 class MenuItem {
   final String title;
